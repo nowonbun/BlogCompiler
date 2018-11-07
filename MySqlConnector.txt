@@ -1,0 +1,3 @@
+https://qiita.com/Masutani/items/ce613bb371c7915b74b9
+https://dev.mysql.com/downloads/connector/net/6.10.html
+https://dev.mysql.com/downloads/windows/visualstudio/

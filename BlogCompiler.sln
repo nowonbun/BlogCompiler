@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogCompiler", "BlogCompiler\BlogCompiler.csproj", "{B996BB7E-333E-425E-BB49-1825E05044DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogCompiler.Entity", "BlogCompiler.Entity\BlogCompiler.Entity.csproj", "{9DE56BBF-01D8-496F-8940-545E5DB10E47}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B996BB7E-333E-425E-BB49-1825E05044DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B996BB7E-333E-425E-BB49-1825E05044DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B996BB7E-333E-425E-BB49-1825E05044DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B996BB7E-333E-425E-BB49-1825E05044DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DE56BBF-01D8-496F-8940-545E5DB10E47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DE56BBF-01D8-496F-8940-545E5DB10E47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DE56BBF-01D8-496F-8940-545E5DB10E47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DE56BBF-01D8-496F-8940-545E5DB10E47}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3508B195-DBE3-44D9-BB99-B32DD950D22A}
+	EndGlobalSection
+EndGlobal

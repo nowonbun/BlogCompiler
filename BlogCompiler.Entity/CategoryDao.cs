@@ -14,7 +14,7 @@ namespace BlogCompiler.Entity
         {
             return Transaction((context) =>
             {
-                return context.Category.ToList();
+                return context.Category.OrderBy(x => x.SEQUENCE).ToList();
             });
         }
         public List<Category> GetAllIncludePost()

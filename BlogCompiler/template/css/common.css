@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 
 @import url("http://fonts.googleapis.com/earlyaccess/notosanskr.css");
 
@@ -186,4 +186,13 @@ main {
 	float: right;
 	margin-bottom: 0px;
 	margin-top: 5px;
+}
+
+/*.card-title {
+    border-bottom: 3px solid #747373;
+    padding-bottom: 5px;
+}*/
+
+.card-text article {
+    color: #000;
 }

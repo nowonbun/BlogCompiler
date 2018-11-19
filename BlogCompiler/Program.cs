@@ -111,7 +111,7 @@ namespace BlogCompiler
                 rss.Append("<description>");
                 String contents = ReadFile(post.FILEPATH).ToString();
                 //rss.Append(Regex.Replace(contents, @"<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", ""));
-                rss.Append(Regex.Replace(contents, @"<[^>]*>", ""));
+                rss.Append(Regex.Replace(contents, @"<[^>]*>", "").Replace("&nbsp;",""));
                 //rss.Append(Regex.Replace(contents, @"<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", ""));
                 rss.Append("</description>");
                 rss.Append("<category>");

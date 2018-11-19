@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Configuration;
 using BlogCompiler.Entity;
 using System.IO;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace BlogCompiler
 {
@@ -49,6 +51,7 @@ namespace BlogCompiler
             }
 
             var categoryList = FactoryDao.GetDao<CategoryDao>().GetAllIncludePost();
+
             foreach (var category in categoryList)
             {
                 CreatePost(categoryList, category);
@@ -57,7 +60,130 @@ namespace BlogCompiler
                     continue;
                 }
                 CreateList(categoryList, category);
+
             }
+            CreateSitemap(savePath, categoryList);
+            CreateRss(savePath, categoryList);
+        }
+        private void CreateRss(String savePath, List<Category> categorylist)
+        {
+            var postlist = categorylist.SelectMany(x => x.Post);
+            String root = ConfigurationManager.AppSettings["SiteRoot"];
+            StringBuilder rss = new StringBuilder();
+            rss.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            rss.Append("<rss version=\"2.0\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:taxo=\"http://purl.org/rss/1.0/modules/taxonomy/\" xmlns:activity=\"http://activitystrea.ms/spec/1.0/\" >");
+            rss.Append("<channel>");
+            rss.Append("<title>");
+            rss.Append(ConfigurationManager.AppSettings["RssTitle"]);
+            rss.Append("</title>");
+            rss.Append("<link>");
+            rss.Append(root);
+            rss.Append("</link>");
+            rss.Append("<description>");
+            rss.Append(ConfigurationManager.AppSettings["RssDescription"]);
+            rss.Append("</description>");
+            rss.Append("<language>");
+            rss.Append(ConfigurationManager.AppSettings["RssLanguage"]);
+            rss.Append("</language>");
+            DateTime dt = DateTime.Now;
+            DateTimeFormatInfo dtfi = new DateTimeFormatInfo();
+            rss.Append("<pubDate>");
+            rss.Append(dt.ToUniversalTime().ToString("ddd, dd MMM yyyy HH:mm:ss 'GMT'", dtfi));
+            rss.Append("</pubDate>");
+            rss.Append("<generator>");
+            rss.Append(ConfigurationManager.AppSettings["RssGenerator"]);
+            rss.Append("</generator>");
+            rss.Append("<managingEditor>");
+            rss.Append(ConfigurationManager.AppSettings["RssEditor"]);
+            rss.Append("</managingEditor>");
+            rss.Append("<webMaster>");
+            rss.Append(ConfigurationManager.AppSettings["RssEditor"]);
+            rss.Append("</webMaster>");
+            foreach (var post in postlist.OrderByDescending(x => x.CREATEDATED))
+            {
+                rss.Append("<item>");
+                rss.Append("<title>");
+                rss.Append(post.TITLE);
+                rss.Append("</title>");
+                rss.Append("<link>");
+                rss.Append(root + post.LOCATION);
+                rss.Append("</link>");
+                rss.Append("<description>");
+                String contents = ReadFile(post.FILEPATH).ToString();
+                //rss.Append(Regex.Replace(contents, @"<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", ""));
+                rss.Append(Regex.Replace(contents, @"<[^>]*>", ""));
+                //rss.Append(Regex.Replace(contents, @"<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", ""));
+                rss.Append("</description>");
+                rss.Append("<category>");
+                rss.Append(post.Category.CATEGORY_NAME);
+                rss.Append("</category>");
+                rss.Append("<author>");
+                rss.Append(ConfigurationManager.AppSettings["RssEditor"]);
+                rss.Append("</author>");
+                rss.Append("<guid>");
+                rss.Append(root + post.LOCATION);
+                rss.Append("</guid>");
+                rss.Append("<pubDate>");
+                rss.Append(post.CREATEDATED.ToString("ddd, dd MMM yyyy HH:mm:ss 'GMT'", dtfi));
+                rss.Append("</pubDate>");
+                rss.Append("</item>");
+            }
+            rss.Append("</channel>");
+            rss.Append("</rss>");
+            WriteFile(new FileInfo(savePath + "\\" + ConfigurationManager.AppSettings["Rss"]).FullName, rss);
+        }
+
+        private void CreateSitemap(String savePath, List<Category> categorylist)
+        {
+            String root = ConfigurationManager.AppSettings["SiteRoot"];
+            StringBuilder sitemap = new StringBuilder();
+            sitemap.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            sitemap.Append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
+            var postlist = categorylist.SelectMany(x => x.Post);
+
+            foreach (var post in postlist.OrderByDescending(x => x.CREATEDATED))
+            {
+                sitemap.Append("<url>");
+                sitemap.Append("<loc>");
+                sitemap.Append(root + post.LOCATION);
+                sitemap.Append("</loc>");
+                sitemap.Append("<lastmod>");
+                sitemap.Append(post.LAST_UPDATED.ToString("yyyy-MM-ddTHH:mm:ss.fffffffzzz"));
+                sitemap.Append("</lastmod>");
+                sitemap.Append("<changefreq>");
+                switch (post.CHANGEFREG)
+                {
+                    case 1: sitemap.Append("never"); break;
+                    case 2: sitemap.Append("yearly"); break;
+                    case 3: sitemap.Append("monthly"); break;
+                    case 4: sitemap.Append("weekly"); break;
+                    case 5: sitemap.Append("daily"); break;
+                    case 6: sitemap.Append("hourly"); break;
+                    default: sitemap.Append("always"); break;
+                }
+
+                sitemap.Append("</changefreq>");
+                sitemap.Append("<priority>");
+                switch (post.CHANGEFREG)
+                {
+                    case 1: sitemap.Append("0.1"); break;
+                    case 2: sitemap.Append("0.2"); break;
+                    case 3: sitemap.Append("0.3"); break;
+                    case 4: sitemap.Append("0.4"); break;
+                    case 5: sitemap.Append("0.5"); break;
+                    case 6: sitemap.Append("0.6"); break;
+                    case 7: sitemap.Append("0.7"); break;
+                    case 8: sitemap.Append("0.8"); break;
+                    case 9: sitemap.Append("0.9"); break;
+                    case 10: sitemap.Append("1.0"); break;
+                    default: sitemap.Append("0.0"); break;
+                }
+
+                sitemap.Append("</priority>");
+                sitemap.Append("</url>");
+            }
+            sitemap.Append("</urlset>");
+            WriteFile(new FileInfo(savePath + "\\" + ConfigurationManager.AppSettings["SiteMap"]).FullName, sitemap);
         }
 
         private void WriteFile(String filepath, StringBuilder html)

@@ -99,7 +99,7 @@ namespace BlogCompiler
             rss.Append("<webMaster>");
             rss.Append(ConfigurationManager.AppSettings["RssEditor"]);
             rss.Append("</webMaster>");
-            foreach (var post in postlist.OrderByDescending(x => x.CREATEDATED))
+            foreach (var post in postlist.Where(x => !x.ISDELETED).OrderByDescending(x => x.CREATEDATED))
             {
                 rss.Append("<item>");
                 rss.Append("<title>");
@@ -111,7 +111,7 @@ namespace BlogCompiler
                 rss.Append("<description>");
                 String contents = ReadFile(post.FILEPATH).ToString();
                 //rss.Append(Regex.Replace(contents, @"<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", ""));
-                rss.Append(Regex.Replace(contents, @"<[^>]*>", "").Replace("&nbsp;",""));
+                rss.Append(Regex.Replace(contents, @"<[^>]*>", "").Replace("&nbsp;", ""));
                 //rss.Append(Regex.Replace(contents, @"<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", ""));
                 rss.Append("</description>");
                 rss.Append("<category>");
@@ -141,7 +141,7 @@ namespace BlogCompiler
             sitemap.Append("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
             var postlist = categorylist.SelectMany(x => x.Post);
 
-            foreach (var post in postlist.OrderByDescending(x => x.CREATEDATED))
+            foreach (var post in postlist.Where(x => !x.ISDELETED).OrderByDescending(x => x.CREATEDATED))
             {
                 sitemap.Append("<url>");
                 sitemap.Append("<loc>");
@@ -240,7 +240,7 @@ namespace BlogCompiler
         {
             String savePath = ConfigurationManager.AppSettings["SavePath"];
             String templateList;
-            if (category.Post.Count > 0)
+            if (category.Post.Where(x => !x.ISDELETED).Count() > 0)
             {
                 templateList = ConfigurationManager.AppSettings["TemplateList"];
             }
@@ -257,7 +257,7 @@ namespace BlogCompiler
             StringBuilder templateBuffer = null;
             int MAXPOST = Int32.Parse(ConfigurationManager.AppSettings["MaxPosting"]);
             int i = 0;
-            foreach (var item in category.Post.OrderByDescending(x => x.CREATEDATED))
+            foreach (var item in category.Post.Where(x => !x.ISDELETED).OrderByDescending(x => x.CREATEDATED))
             {
                 if (i >= MAXPOST)
                 {
@@ -419,7 +419,7 @@ namespace BlogCompiler
             String savePath = ConfigurationManager.AppSettings["SavePath"];
             List<Post> recently = FactoryDao.GetDao<PostDao>().GetRecentlyAll(6);
 
-            foreach (var post in category.Post)
+            foreach (var post in category.Post.Where(x => !x.ISDELETED))
             {
                 StringBuilder templatePostStringBuilder = ReadFile(templatePost);
 
@@ -443,7 +443,7 @@ namespace BlogCompiler
                 int state = 0;
                 Post pre = null;
                 Post next = null;
-                foreach (var check in category.Post)
+                foreach (var check in category.Post.Where(x => !x.ISDELETED))
                 {
                     if (check == post || check.IDX == post.IDX)
                     {

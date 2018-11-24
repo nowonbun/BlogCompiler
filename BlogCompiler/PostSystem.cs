@@ -41,7 +41,8 @@ namespace BlogCompiler
                 templatePostStringBuilder.Replace("#####LASTUPDATEDDATE2#####", post.LAST_UPDATED.ToString("yyyy-MM-dd HH:mm"));
 
                 templatePostStringBuilder.Replace("#####KEYWORDS#####", ConfigurationManager.AppSettings["Keywords"]);
-                templatePostStringBuilder.Replace("#####DESCRIPTION#####", Regex.Replace(contents, @"<[^>]*>", "").Replace("&nbsp;", ""));
+                //templatePostStringBuilder.Replace("#####DESCRIPTION#####", Regex.Replace(contents, @"<[^>]*>", "").Replace("&nbsp;", ""));
+                templatePostStringBuilder.Replace("#####DESCRIPTION#####", ConfigurationManager.AppSettings["Description"]);
                 templatePostStringBuilder.Replace("#####CANONICAL#####", ConfigurationManager.AppSettings["SiteRoot"]);
                 templatePostStringBuilder.Replace("#####AUTHOR#####", ConfigurationManager.AppSettings["Author"]);
                 templatePostStringBuilder.Replace("#####ALTERNATE#####", ConfigurationManager.AppSettings["SiteRoot"] + "/" + ConfigurationManager.AppSettings["Rss"]);
@@ -153,23 +154,22 @@ namespace BlogCompiler
                     {
                         continue;
                     }
-                    buffer.Append("<li>");
-                    buffer.Append("<div class='row'>");
+                    buffer.Append("<li class='row'>");
                     buffer.Append("<div class='col-12 mb-0'>");
+                    buffer.Append("<i class='fa fa-caret-right mr-2'></i>");
                     buffer.Append("<a href='");
                     buffer.Append(p.LOCATION);
                     buffer.Append("'>[");
                     buffer.Append(p.Category.CATEGORY_NAME);
                     buffer.Append("] ");
                     buffer.Append(p.TITLE);
-                    buffer.Append("</a>");
                     buffer.Append("<span class='my-list-date float-right date-type-1 font-7'>");
                     buffer.Append(p.CREATEDATED.ToString("yyyy년 MM월 dd일 HH시 mm분"));
                     buffer.Append("에 작성된 글...</span>");
                     buffer.Append("<span class='my-list-date float-right date-type-2 font-7'>");
                     buffer.Append(p.CREATEDATED.ToString("yyyy-MM-dd HH:mm"));
                     buffer.Append(" 작성</span>");
-                    buffer.Append("</div>");
+                    buffer.Append("</a>");
                     buffer.Append("</div>");
                     buffer.Append("</li>");
                 }

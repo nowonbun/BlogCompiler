@@ -164,6 +164,9 @@
     <Content Include="template\img\image_fix.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="template\img\ogimage.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="template\js\compiled-4.5.9.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

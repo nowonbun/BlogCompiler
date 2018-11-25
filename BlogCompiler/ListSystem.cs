@@ -47,6 +47,8 @@ namespace BlogCompiler
             templateListStringBuilder.Replace("#####AUTHOR#####", ConfigurationManager.AppSettings["Author"]);
             templateListStringBuilder.Replace("#####ALTERNATE#####", ConfigurationManager.AppSettings["SiteRoot"] + "/" + ConfigurationManager.AppSettings["Rss"]);
 
+
+
             StringBuilder buffer = new StringBuilder();
             StringBuilder templateBuffer = null;
             int MAXPOST = Int32.Parse(ConfigurationManager.AppSettings["MaxPosting"]);
@@ -66,6 +68,7 @@ namespace BlogCompiler
                     templateBuffer = new StringBuilder();
                     templateBuffer.Append(templateListStringBuilder.ToString());
                 }
+
                 buffer.Append("<hr class='mb-3 mt-3'>");
                 buffer.Append("<div class='row mt-3 wow fadeIn'>");
                 buffer.Append("<div class='col-lg-5 col-xl-4 mb-4'>");
@@ -126,6 +129,7 @@ namespace BlogCompiler
             {
                 StringBuilder data = listTemplate[0];
                 data.Replace("#####PAGING#####", "");
+                data.Replace("#####URL#####", ConfigurationManager.AppSettings["SiteRoot"] + category.URL);
                 WriteFile(savePath + category.URL.Replace("/", "\\"), data);
             }
             else
@@ -198,10 +202,12 @@ namespace BlogCompiler
                     data.Replace("#####PAGING#####", buffer.ToString());
                     if (i == 0)
                     {
+                        data.Replace("#####URL#####", ConfigurationManager.AppSettings["SiteRoot"] + category.URL);
                         WriteFile(savePath + category.URL.Replace("/", "\\"), data);
                     }
                     else
                     {
+                        data.Replace("#####URL#####", ConfigurationManager.AppSettings["SiteRoot"] + categoryUrlBuffer + i.ToString() + ext);
                         WriteFile(savePath + categoryUrlBuffer.Replace("/", "\\") + i.ToString() + ext, data);
                     }
                 }

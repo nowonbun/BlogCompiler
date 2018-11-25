@@ -266,6 +266,10 @@ article p {
     text-align: right;
 }
 
+.text-align-left {
+    text-align: left;
+}
+
 .gray-font {
     color: #a2a2a2;
 }

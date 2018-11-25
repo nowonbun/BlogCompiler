@@ -41,11 +41,14 @@ namespace BlogCompiler
                 templatePostStringBuilder.Replace("#####LASTUPDATEDDATE2#####", post.LAST_UPDATED.ToString("yyyy-MM-dd HH:mm"));
 
                 templatePostStringBuilder.Replace("#####KEYWORDS#####", ConfigurationManager.AppSettings["Keywords"]);
-                //templatePostStringBuilder.Replace("#####DESCRIPTION#####", Regex.Replace(contents, @"<[^>]*>", "").Replace("&nbsp;", ""));
                 templatePostStringBuilder.Replace("#####DESCRIPTION#####", ConfigurationManager.AppSettings["Description"]);
                 templatePostStringBuilder.Replace("#####CANONICAL#####", ConfigurationManager.AppSettings["SiteRoot"]);
                 templatePostStringBuilder.Replace("#####AUTHOR#####", ConfigurationManager.AppSettings["Author"]);
                 templatePostStringBuilder.Replace("#####ALTERNATE#####", ConfigurationManager.AppSettings["SiteRoot"] + "/" + ConfigurationManager.AppSettings["Rss"]);
+
+                //templatePostStringBuilder.Replace("#####SUMMARY#####", Regex.Replace(contents, @"<[^>]*>", "").Replace("&nbsp;", ""));
+                templatePostStringBuilder.Replace("#####SUMMARY#####", ConfigurationManager.AppSettings["Description"]);
+                templatePostStringBuilder.Replace("#####URL#####", ConfigurationManager.AppSettings["SiteRoot"] + post.LOCATION);
 
                 StringBuilder buffer = new StringBuilder();
                 buffer.Append(Encoding.UTF8.GetString(post.IMAGE));

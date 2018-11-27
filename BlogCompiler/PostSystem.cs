@@ -26,7 +26,7 @@ namespace BlogCompiler
             String savePath = ConfigurationManager.AppSettings["SavePath"];
             List<Post> recently = FactoryDao.GetDao<PostDao>().GetRecentlyAll(6);
 
-            foreach (var post in category.Post.Where(x => !x.ISDELETED))
+            foreach (var post in category.Post.Where(x => !x.ISDELETED).OrderByDescending(x => x.CREATEDATED))
             {
                 StringBuilder templatePostStringBuilder = ReadFile(templatePost);
                 String contents = ReadFile(post.FILEPATH).ToString();
@@ -59,7 +59,7 @@ namespace BlogCompiler
                 int state = 0;
                 Post pre = null;
                 Post next = null;
-                foreach (var check in category.Post.Where(x => !x.ISDELETED))
+                foreach (var check in category.Post.Where(x => !x.ISDELETED).OrderByDescending(x => x.CREATEDATED))
                 {
                     if (check == post || check.IDX == post.IDX)
                     {

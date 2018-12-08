@@ -7,14 +7,14 @@ var post = function (obj) {
         $("img").on("click", function () {
             $("#ImgModal").show();
             $("#ImgModal .modal-content").attr("src", this.src);
-            $("body").css("position","fixed");
+            //$("body").css("position","fixed");
         });
         $("#ImgModal").on("click", function () {
-            $("body").css("position", "");
+            //$("body").css("position", "");
             $("#ImgModal").hide();
         });
         $("#ImgModal .close").on("click", function () {
-            $("body").css("position", "");
+            //$("body").css("position", "");
             $("#ImgModal").hide();
         });
     }

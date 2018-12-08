@@ -241,7 +241,7 @@ main {
     border: 1px #c3a0ea solid;
     border-image: initial;
     max-width: 680px;
-    max-height: 340px;
+    /*max-height: 340px;*/
 }
 
 .post-image-area {

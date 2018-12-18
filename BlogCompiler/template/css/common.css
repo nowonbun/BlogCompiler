@@ -140,9 +140,13 @@ main {
 }
 
 .my-list-summary {
-    line-height: 1.6em;
+    /*line-height: 1.6em;
     min-height: 4.8em;
-    max-height: 4.8em;
+    max-height: 4.8em;*/
+	line-height: 1.5em;
+    min-height: 6em;
+    max-height: 6em;
+	font-size: 10pt;
     margin: 0px;
     overflow: hidden;
     word-break: break-all;
@@ -201,7 +205,16 @@ main {
 
 .card-text article {
     color: #000;
-    font-size: 13pt;
+    /*font-size: 13pt;*/
+	font-size: 10.5pt;
+	line-height: 1.5rem;
+}
+fieldset{
+	font-size: 10pt;
+}
+h4.my-list-title,
+h2.card-title{
+	font-size: 18pt;
 }
 
 .card-text {
@@ -272,6 +285,10 @@ article p {
 
 .gray-font {
     color: #a2a2a2;
+}
+
+a.prenext-link{
+    font-size:10pt;
 }
 
 @media screen and (max-width: 767px) {

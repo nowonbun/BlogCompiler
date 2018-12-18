@@ -64,7 +64,7 @@ namespace BlogCompiler
                 rss.Append("<description>");
                 String contents = ReadFile(post.FILEPATH).ToString();
                 //rss.Append(Regex.Replace(contents, @"<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", ""));
-                rss.Append(Regex.Replace(contents, @"<[^>]*>", "").Replace("&nbsp;", ""));
+                rss.Append(CreateDescription(ReadFile(post.FILEPATH).ToString()));
                 //rss.Append(Regex.Replace(contents, @"<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", ""));
                 rss.Append("</description>");
                 rss.Append("<category>");
@@ -84,6 +84,22 @@ namespace BlogCompiler
             rss.Append("</channel>");
             rss.Append("</rss>");
             WriteFile(new FileInfo(savePath + "\\" + ConfigurationManager.AppSettings["Rss"]).FullName, rss);
+        }
+        private String CreateDescription(String contents)
+        {
+            contents = contents.ToLower();
+            int pos = contents.IndexOf("<pre");
+            while (pos > -1)
+            {
+                int epos = contents.IndexOf("</pre>", pos);
+                if (epos < 0)
+                {
+                    break;
+                }
+                contents = contents.Remove(pos, epos - pos);
+                pos = contents.IndexOf("<pre");
+            }
+            return "<![CDATA[" + Regex.Replace(contents, @"<[^>]*>", "").Replace("&nbsp;", "") + "]]>";
         }
     }
 }

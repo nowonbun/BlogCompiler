@@ -182,7 +182,9 @@
     <Content Include="template\js\highlightjs-line-numbers.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="template\js\post.js" />
+    <Content Include="template\js\post.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="template\list.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

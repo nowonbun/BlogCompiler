@@ -86,13 +86,13 @@ namespace BlogCompiler
                 buffer.Append("</div>");
                 buffer.Append("</div>");
                 buffer.Append("<div class='col-lg-7 col-xl-7 ml-xl-4 mb-4'>");
-                buffer.Append("<h3 class='mb-3 font-weight-bold dark-grey-text'>");
-                buffer.Append("<p class='my-list-title'><a href='.");
+                buffer.Append("<h4 class='mb-3 font-weight-bold dark-grey-text my-list-title'>");
+                buffer.Append("<a href='.");
                 buffer.Append(item.LOCATION);
                 buffer.Append("'>");
                 buffer.Append(item.TITLE);
-                buffer.Append("</a></p>");
-                buffer.Append("</h3>");
+                buffer.Append("</a>");
+                buffer.Append("</h4>");
                 buffer.Append("<p class='grey-text my-list-summary'>");
                 buffer.Append(item.SUMMARY);
                 buffer.Append("</p>");

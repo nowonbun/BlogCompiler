@@ -91,6 +91,36 @@ pre{
 	margin-top: 10px;
 }
 
+.code-title,
+.image-title {
+    cursor: pointer;
+}
+
+.image-title {
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: -10px;
+    background-color: #80a3ff;
+    color: #fff;
+    transition: height 2s;
+    -webkit-transition: height 2s; /* Safari 3.1 to 6.0 */
+}
+
+div.image-view-disabled .image-title {
+    margin-bottom: 10px;
+}
+
+pre.code-view-disabled code,
+div.image-view-disabled img {
+    display: none;
+    height: 0px;
+}
+
+pre.code-view code,
+div.image-view img {
+    transition: height 2s;
+}
+
 /* 100% Image Width on Smaller Screens */
 @media only screen and (max-width: 700px) {
     .modal-content {

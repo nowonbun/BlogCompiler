@@ -20,6 +20,29 @@ namespace BlogCompiler
             }
         }
 
+        private String CreateDescription(String contents)
+        {
+            contents = contents.ToLower();
+            int pos = contents.IndexOf("<pre");
+            while (pos > -1)
+            {
+                int epos = contents.IndexOf("</pre>", pos);
+                if (epos < 0)
+                {
+                    break;
+                }
+                contents = contents.Remove(pos, epos - pos);
+                pos = contents.IndexOf("<pre");
+            }
+            String ret = Regex.Replace(contents, @"<[^>]*>", "").Replace("&nbsp;", "");
+            int maxlength = Int32.Parse(ConfigurationManager.AppSettings["DescriptMaxLength"]);
+            if (ret.Length > maxlength)
+            {
+                return ret.Substring(0, maxlength - 2) + "..";
+            }
+            return ret;
+        }
+
         private void CreatePost(List<Category> list, Category category)
         {
             String templatePost = ConfigurationManager.AppSettings["TemplatePost"];
@@ -41,20 +64,22 @@ namespace BlogCompiler
                 templatePostStringBuilder.Replace("#####LASTUPDATEDDATE2#####", post.LAST_UPDATED.ToString("yyyy-MM-dd HH:mm"));
 
                 templatePostStringBuilder.Replace("#####KEYWORDS#####", ConfigurationManager.AppSettings["Keywords"]);
-                templatePostStringBuilder.Replace("#####DESCRIPTION#####", ConfigurationManager.AppSettings["Description"]);
+                //templatePostStringBuilder.Replace("#####DESCRIPTION#####", ConfigurationManager.AppSettings["Description"]);
+                templatePostStringBuilder.Replace("#####DESCRIPTION#####", CreateDescription(contents));
                 templatePostStringBuilder.Replace("#####CANONICAL#####", ConfigurationManager.AppSettings["SiteRoot"]);
                 templatePostStringBuilder.Replace("#####AUTHOR#####", ConfigurationManager.AppSettings["Author"]);
                 templatePostStringBuilder.Replace("#####ALTERNATE#####", ConfigurationManager.AppSettings["SiteRoot"] + "/" + ConfigurationManager.AppSettings["Rss"]);
 
                 //templatePostStringBuilder.Replace("#####SUMMARY#####", Regex.Replace(contents, @"<[^>]*>", "").Replace("&nbsp;", ""));
-                templatePostStringBuilder.Replace("#####SUMMARY#####", ConfigurationManager.AppSettings["Description"]);
+                //templatePostStringBuilder.Replace("#####SUMMARY#####", ConfigurationManager.AppSettings["Description"]);
+                templatePostStringBuilder.Replace("#####SUMMARY#####", CreateDescription(contents));
                 templatePostStringBuilder.Replace("#####URL#####", ConfigurationManager.AppSettings["SiteRoot"] + post.LOCATION);
 
                 StringBuilder buffer = new StringBuilder();
-                buffer.Append(Encoding.UTF8.GetString(post.IMAGE));
-                templatePostStringBuilder.Replace("#####IMAGE#####", buffer.ToString());
-                buffer.Clear();
-                templatePostStringBuilder.Replace("#####IMAGECOMMNET#####", post.IMAGE_COMMENT);
+                //buffer.Append(Encoding.UTF8.GetString(post.IMAGE));
+                //templatePostStringBuilder.Replace("#####IMAGE#####", buffer.ToString());
+                //buffer.Clear();
+                //templatePostStringBuilder.Replace("#####IMAGECOMMNET#####", post.IMAGE_COMMENT);
                 templatePostStringBuilder.Replace("#####CONTENTS#####", contents);
                 int state = 0;
                 Post pre = null;
@@ -68,11 +93,11 @@ namespace BlogCompiler
                     }
                     if (state == 0)
                     {
-                        pre = check;
+                        next = check;
                     }
                     if (state == 1)
                     {
-                        next = check;
+                        pre = check;
                         break;
                     }
                 }
@@ -103,7 +128,7 @@ namespace BlogCompiler
                 if (pre != null)
                 {
                     buffer.Append("<div class='col-12 mb-1'>");
-                    buffer.Append("<p class='my-pre-list-title' style='margin-bottom:0px;'><a href='");
+                    buffer.Append("<p class='my-pre-list-title' style='margin-bottom:0px;'><a class='prenext-link' href='");
                     buffer.Append(pre.LOCATION);
                     buffer.Append("'> ");
                     buffer.Append("<span class='my-pre-next-icon'><i class='fa fa-chevron-up'></i>이전글</span>");
@@ -124,7 +149,7 @@ namespace BlogCompiler
                 if (next != null)
                 {
                     buffer.Append("<div class='col-12 mt-1'>");
-                    buffer.Append("<p class='my-pre-list-title' style='margin-bottom:0px;'><a href='");
+                    buffer.Append("<p class='my-pre-list-title' style='margin-bottom:0px;'><a class='prenext-link' href='");
                     buffer.Append(next.LOCATION);
                     buffer.Append("'> ");
                     buffer.Append("<span class='my-pre-next-icon'><i class='fa fa-chevron-down'></i>다음글</span>");

@@ -20,11 +20,13 @@ code {
     margin-left: 10px;
     font-size: 10pt;
     white-space: pre-wrap;
+	line-height:15px;
 }
 
 .hljs-ln-numbers .hljs-ln-line {
     margin-right: 10px;
     font-size: 10pt;
+	line-height:15px;
 }
 
 .code-title {
